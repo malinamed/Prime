@@ -37,10 +37,10 @@ Fiecare operatie de sync este logata in tabelul `market_data_logs` din PostgreSQ
 
 ```bash
 # 1. Construieste si porneste containerele
+#    (composer install ruleaza automat la primul start)
 docker compose up -d --build
 
-# 2. Dependinte
-docker compose exec app composer install
+# 2. Instaleaza dependintele Node si construieste frontend-ul
 docker compose exec app npm install && npm run build
 
 # 3. Configurare Laravel
@@ -52,6 +52,8 @@ docker compose exec app php artisan market:sync
 
 # 5. Deschide http://localhost
 ```
+
+> **Nota:** La primul `docker compose up --build`, containerul va rula `composer install` automat inainte de a porni serverul. Poate dura 1-2 minute in plus la primul start.
 
 ---
 

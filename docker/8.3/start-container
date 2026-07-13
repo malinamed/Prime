@@ -15,6 +15,21 @@ fi
 
 chmod -R ugo+rw /.composer
 
+# Ensure storage and cache directories exist and are writable
+mkdir -p /var/www/html/storage/logs \
+         /var/www/html/storage/framework/cache/data \
+         /var/www/html/storage/framework/sessions \
+         /var/www/html/storage/framework/views \
+         /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+chown -R sail:sail /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
+
+# Auto-install composer dependencies if vendor/ is absent
+if [ ! -d /var/www/html/vendor ]; then
+    echo "vendor/ not found — running composer install..."
+    cd /var/www/html && composer install --no-interaction --prefer-dist --optimize-autoloader
+fi
+
 if [ $# -gt 0 ]; then
     if [ "$SUPERVISOR_PHP_USER" = "root" ]; then
         exec "$@"
