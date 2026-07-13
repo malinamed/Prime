@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class DashboardController extends Controller
+class DashboardController
 {
     // Reads ONLY from Redis — no DB queries, no direct API calls
     public function index(Request $request): Response
